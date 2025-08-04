@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple Calculator</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+
+    .calculator {
+      border: 1px solid #888;
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      padding: 20px;
+      background: #fff;
+    }
+
+    .calculator-screen {
+      width: 100%;
+      height: 60px;
+      font-size: 2rem;
+      text-align: right;
+      border: none;
+      background: #252525;
+      color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .calculator-keys {
+      display: grid;
+      grid-template-columns: repeat(4, 80px);
+      grid-gap: 10px;
+    }
+
+    button {
+      height: 60px;
+      font-size: 1.5rem;
+      border: none;
+      border-radius: 5px;
+      background: #e0e1e6;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    button.operator {
+      background: #f8a13f;
+      color: #fff;
+    }
+
+    button.equal-sign {
+      background: #2e86de;
+      color: #fff;
+      grid-column: span 2;
+    }
+
+    button.all-clear {
+      background: #dc3545;
+      color: #fff;
+    }
+
+    button:hover {
+      background: #d1d1d6;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" class="calculator-screen" value="" disabled />
+
+    <div class="calculator-keys">
+      <button type="button" class="operator" value="+">+</button>
+      <button type="button" class="operator" value="-">-</button>
+      <button type="button" class="operator" value="*">&times;</button>
+      <button type="button" class="operator" value="/">&divide;</button>
+
+      <button type="button" value="7">7</button>
+      <button type="button" value="8">8</button>
+      <button type="button" value="9">9</button>
+
+      <button type="button" value="4">4</button>
+      <button type="button" value="5">5</button>
+      <button type="button" value="6">6</button>
+
+      <button type="button" value="1">1</button>
+      <button type="button" value="2">2</button>
+      <button type="button" value="3">3</button>
+
+      <button type="button" value="0">0</button>
+      <button type="button" value=".">.</button>
+      <button type="button" class="equal-sign" value="=">=</button>
+      <button type="button" class="all-clear" value="all-clear">AC</button>
+    </div>
+  </div>
+
+  <script>
+    const screen = document.querySelector('.calculator-screen');
+    const keys = document.querySelector('.calculator-keys');
+
+    keys.addEventListener('click', e => {
+      if (!e.target.matches('button')) return;
+
+      const key = e.target;
+      const action = key.classList.contains('operator') ? 'operator' :
+                     key.classList.contains('equal-sign') ? 'equal' :
+                     key.classList.contains('all-clear') ? 'clear' : 'number';
+      const keyValue = key.value;
+      let screenValue = screen.value;
+
+      if (action === 'number') {
+        screen.value = screenValue === '0' ? keyValue : screenValue + keyValue;
+      }
+
+      if (action === 'operator') {
+        screen.value += keyValue;
+      }
+
+      if (action === 'equal') {
+        try {
+          screen.value = eval(screenValue);
+        } catch {
+          screen.value = 'Error';
+        }
+      }
+
+      if (action === 'clear') {
+        screen.value = '';
+      }
+    });
+  </script>
+</body>
+</html>
